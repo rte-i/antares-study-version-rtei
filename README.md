@@ -14,7 +14,10 @@
   - [SolverVersion](#solverversion)
   - [Pydantic model](#pydantic-model)
 - [Development](#development)
+  - [Development tasks](#development-tasks)
+  - [Building the package](#building-the-package)
 - [License](#license)
+- [Changelog](CHANGELOG.md)
 
 ## Overview
 
@@ -22,7 +25,7 @@ The `antares-study-version` package defines `StudyVersion` and `SolverVersion` c
 It can be used to manage the version of a study, but also the version
 of [Antares Solver](https://github.com/AntaresSimulatorTeam/Antares_Simulator).
 It supports the [semver](https://semver.org/) format ("major.minor.patch") and the integer format
-(major*100 + minor*10 + patch), which is specific to Antares.
+(major×100 + minor×10 + patch), which is specific to Antares.
 
 This module harmonizes the management of versions in Antares:
 
@@ -31,7 +34,7 @@ This module harmonizes the management of versions in Antares:
 
 In the data of a study and in the programs, we encounter several version formats:
 
-- dotted string (ex. "8.7" or "8.7.2"),
+- dotted string (ex. `"8.7"` or `"8.7.2"`),
 - compact string (ex. `"870"`),
 - integer (ex. `870`).
 - tuples or lists (ex. `(8, 7)` or `[8, 7, 2]`).
@@ -42,8 +45,8 @@ For instance, since
 of Antares Solver, versions are stored as dotted strings;
 the compact format is now obsolete (backward compatibility is ensured for versions prior to 9.0);
 
-For instance, the `study.antares` configuration file now uses the "X.Y" format for the study version instead of the "
-XYZ" format.
+For instance, the `study.antares` configuration file now uses the "X.Y" format for the study version instead
+of the "XYZ" format.
 
 ```ini
 [antares]
@@ -238,13 +241,19 @@ hatch fmt
 
 > See [hatch fmt](https://hatch.pypa.io/latest/cli/reference/#hatch-fmt) documentation
 
-➢ To run the tests, run:
+➢ To run the tests on the current Python version, run:
 
 ```shell
 hatch run test
 ```
 
 > See [hatch run](https://hatch.pypa.io/latest/cli/reference/#hatch-run) documentation
+
+➢ To run the tests on Python 3.12, for example, run:
+
+```shell
+hatch run all.py3.12:test
+```
 
 ➢ To generate the test coverage report, run:
 
