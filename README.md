@@ -230,7 +230,7 @@ This command will spawn a new shell with the virtual environment activated. Use 
 
 ### Development tasks
 
-➢ To format and lint the source code with [ruff](), run:
+➢ To format and lint the source code with [ruff](https://docs.astral.sh/ruff/), run:
 
 ```shell
 hatch fmt
