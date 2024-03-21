@@ -6,5 +6,5 @@ Antares Study (and Solver) version models.
 
 __version__ = "0.1.0"
 __author__ = "RTE, Antares Web Team"
-__date__ = "unreleased"
+__date__ = "2024-03-20"
 __credits__ = "© Réseau de Transport de l’Électricité (RTE)"
