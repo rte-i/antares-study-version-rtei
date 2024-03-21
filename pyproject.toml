@@ -67,6 +67,7 @@ python = ["3.8", "3.9", "3.10", "3.11", "3.12"]
 dependencies = [
     "pytest<8",
     "pydantic<2",
+    "pytest-freezer<0.5",
     "mypy>=1.0.0",
 ]
 [tool.hatch.envs.types.scripts]
