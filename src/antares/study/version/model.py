@@ -60,7 +60,12 @@ class _TripletVersion:
             return NotImplemented
 
     def __eq__(self, other: object) -> bool:
-        return not self.__ne__(other)
+        if isinstance(other, _TripletVersion):
+            return (self.major, self.minor, self.patch).__eq__((other.major, other.minor, other.patch))
+        elif isinstance(other, (int, str, t.Sequence, t.Mapping)):
+            return self.__eq__(self.parse(other))
+        else:
+            return NotImplemented
 
     def __lt__(self, other):
         if isinstance(other, _TripletVersion):
