@@ -44,7 +44,7 @@ dependencies = [
     "coverage[toml]>=6.5",
     "pytest<8",
     "pydantic<2",
-    "pytest-freezegun<0.5",
+    "pytest-freezer<0.5",
 ]
 
 [tool.hatch.envs.default.scripts]
