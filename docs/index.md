@@ -3,9 +3,9 @@
 [![PyPI - Version](https://img.shields.io/pypi/v/antares-study-version.svg)](https://pypi.org/project/antares-study-version)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/antares-study-version.svg)](https://pypi.org/project/antares-study-version)
 
-![antares-study-version-title](docs/assets/antares-study-version-title.jpeg)
+Welcome to the `antares-study-version` documentation!
 
-Version française : [README_fr.md](README_fr.md)
+![antares-study-version-title](assets/antares-study-version-title.jpeg)
 
 The `antares-study-version` package is both a library and a command line application
 for managing versions of raw Antares studies (on disk studies).
@@ -23,9 +23,8 @@ This utility is also useful for developers who wish to update test studies.
 
 **Table of Contents**
 
-- [overview](docs/overview.md)
-- [installation](docs/installation.md)
-- [usage](docs/usage.md)
-- [development](docs/development.md)
-- [Changelog](docs/CHANGELOG.md)
-- [LICENSE](LICENSE.md)
+- [overview](overview.md)
+- [installation](installation.md)
+- [usage](usage.md)
+- [development](development.md)
+- [Changelog](CHANGELOG.md)
