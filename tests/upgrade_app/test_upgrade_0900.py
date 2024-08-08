@@ -4,6 +4,13 @@ from antares.study.version import StudyVersion
 from antares.study.version.ini_reader import IniReader
 from tests.conftest import StudyAssets
 
+
+def get_version(d): # type: ignore
+    """
+    Extract version attribute from a nested dict structure
+    """
+    return d["antares"]["version"]
+
 def test_nominal_case(study_assets: StudyAssets):
     """
     Check that short term storages are correctly modified
@@ -17,7 +24,6 @@ def test_nominal_case(study_assets: StudyAssets):
     actual = IniReader().read(actual_path)
     expected_path = study_assets.expected_dir.joinpath("study.antares")
     expected = IniReader().read(expected_path)
-    get_version = lambda x: x["antares"]["version"]
     # Check that antares.version attributes do match
     # We can't check the entire files because of attribute
     # antares.lastsave

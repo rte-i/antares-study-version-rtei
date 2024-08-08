@@ -1,7 +1,5 @@
 from pathlib import Path
 
-from antares.study.version.ini_reader import IniReader
-from antares.study.version.ini_writer import IniWriter
 from antares.study.version.model.study_version import StudyVersion
 
 from .upgrade_method import UpgradeMethod
