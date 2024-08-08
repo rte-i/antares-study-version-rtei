@@ -2,13 +2,13 @@ import datetime
 import re
 from pathlib import Path
 from unittest import mock
+import configparser
 
 import pytest
 
 from antares.study.version import StudyVersion
 from antares.study.version.create_app import TEMPLATES_BY_VERSIONS, CreateApp
 from antares.study.version.exceptions import ApplicationError
-from antares.study.version.ini_reader import IniReader
 
 AVAILABLE_VERSIONS = list(TEMPLATES_BY_VERSIONS)
 
@@ -28,12 +28,10 @@ class TestCreateApp:
         app()
 
         study_antares_file = study_dir / "study.antares"
-        ini_reader = IniReader()
-        section = ini_reader.read(study_antares_file, section="antares")
-        properties = section["antares"]
-        ## FIXME For study_version >= 9 parser returns a float, unexpectedly
-        ## This is slightly better than mock.ANY
-        expected_version = int(study_version) if study_version < 9 else (int(study_version) / 100)
+        ini_reader = configparser.ConfigParser()
+        ini_reader.read(study_antares_file, encoding="utf-8")
+        properties = ini_reader["antares"]
+        expected_version = study_version
         assert properties == {
             "author": "Robert Smith",
             "caption": "My New App",
@@ -42,6 +40,6 @@ class TestCreateApp:
             "version": expected_version,
         }
 
-        created_date = datetime.datetime.fromtimestamp(properties["created"])
-        last_save_date = datetime.datetime.fromtimestamp(properties["lastsave"])
+        created_date = datetime.datetime.fromtimestamp(int(properties["created"]))
+        last_save_date = datetime.datetime.fromtimestamp(int(properties["lastsave"]))
         assert last_save_date == created_date
