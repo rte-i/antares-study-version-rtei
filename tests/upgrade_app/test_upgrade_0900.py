@@ -4,6 +4,7 @@ from antares.study.version.ini_reader import IniReader
 from tests.conftest import StudyAssets
 from tests.helpers import are_same_dir, DEFAULT_IGNORES
 
+
 def get_version(d):  # type: ignore
     """
     Extract version attribute from a nested dict structure
@@ -28,4 +29,4 @@ def test_nominal_case(study_assets: StudyAssets):
     # We can't check the entire files because of attribute
     # antares.lastsave
     assert get_version(actual) == get_version(expected)
-    assert are_same_dir(study_assets.study_dir, study_assets.expected_dir, ignore = DEFAULT_IGNORES | {"study.antares"})
+    assert are_same_dir(study_assets.study_dir, study_assets.expected_dir, ignore=DEFAULT_IGNORES | {"study.antares"})
