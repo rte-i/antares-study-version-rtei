@@ -40,6 +40,6 @@ class TestCreateApp:
             "version": expected_version,
         }
 
-        created_date = datetime.datetime.fromtimestamp(int(properties["created"]))
-        last_save_date = datetime.datetime.fromtimestamp(int(properties["lastsave"]))
+        created_date = datetime.datetime.fromtimestamp(ini_reader.getint("antares", "created"))
+        last_save_date = datetime.datetime.fromtimestamp(ini_reader.getint("antares", "lastsave"))
         assert last_save_date == created_date

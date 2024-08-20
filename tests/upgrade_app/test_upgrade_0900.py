@@ -1,9 +1,8 @@
-# from antares.study.version.upgrade_app.upgrader_0900 import UpgradeTo0900
 from antares.study.version.upgrade_app import UpgradeApp
 from antares.study.version import StudyVersion
 from antares.study.version.ini_reader import IniReader
 from tests.conftest import StudyAssets
-
+from tests.helpers import are_same_dir, DEFAULT_IGNORES
 
 def get_version(d):  # type: ignore
     """
@@ -29,3 +28,4 @@ def test_nominal_case(study_assets: StudyAssets):
     # We can't check the entire files because of attribute
     # antares.lastsave
     assert get_version(actual) == get_version(expected)
+    assert are_same_dir(study_assets.study_dir, study_assets.expected_dir, ignore = DEFAULT_IGNORES | {"study.antares"})
