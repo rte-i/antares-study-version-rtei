@@ -61,7 +61,7 @@ class UpgradeTo0902(UpgradeMethod):
         other_preferences = data["other preferences"]
         other_preferences.pop("initial-reservoir-levels", None)
         other_preferences["shedding-policy"] = "accurate shave peaks"
-        data["compatibility"] = {"hydro-pmax": "daily"}
+        data["compatibility"] = {"hydro-pmax": "daily", "hydro-rule-curves": "single"}
 
         if "variables selection" in data:
             _upgrade_thematic_trimming(data)
@@ -117,6 +117,37 @@ class UpgradeTo0902(UpgradeMethod):
         sections["overflow spilled cost difference"] = new_section
         writer = IniWriter()
         writer.write(sections, ini_path)
+
+        hydro_dir = study_dir / "input" / "hydro"
+
+        common_capacity_path = hydro_dir / "common" / "capacity"
+
+        if not Path(common_capacity_path).is_dir():
+            return
+
+        for area_id in all_areas_ids:
+            gen_file = common_capacity_path / f"maxDailyGenEnergy_{area_id}.txt"
+            pump_file = common_capacity_path / f"maxDailyPumpEnergy_{area_id}.txt"
+
+            gen_file.touch()
+            pump_file.touch()
+
+        matrices_to_create = [
+            "maxDailyReservoirLevels.txt",
+            "minDailyReservoirLevels.txt",
+            "avgDailyReservoirLevels.txt",
+            "maxHourlyGenPower.txt",
+            "maxHourlyPumpPower.txt",
+        ]
+
+        series_path = hydro_dir / "series"
+
+        if not Path(series_path).is_dir():
+            return
+        for area in series_path.iterdir():
+            area_dir = hydro_dir / area
+            for matrix in matrices_to_create:
+                (area_dir / matrix).touch()
 
     @classmethod
     def upgrade(cls, study_dir: Path) -> None:
