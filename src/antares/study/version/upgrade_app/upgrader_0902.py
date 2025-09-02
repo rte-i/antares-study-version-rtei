@@ -8,6 +8,7 @@ from antares.study.version.model.study_version import StudyVersion
 from .upgrade_method import UpgradeMethod
 from ..model.general_data import GENERAL_DATA_PATH, GeneralData
 
+import numpy as np
 
 def _upgrade_thematic_trimming(data: GeneralData) -> None:
     def _get_variables_to_remove() -> set[str]:
@@ -120,8 +121,8 @@ class UpgradeTo0902(UpgradeMethod):
             gen_file = common_capacity_path / f"maxDailyGenEnergy_{area_id}.txt"
             pump_file = common_capacity_path / f"maxDailyPumpEnergy_{area_id}.txt"
 
-            gen_file.touch()
-            pump_file.touch()
+            np.savetxt(gen_file, np.full((365, 1), 24), fmt="%d")
+            np.savetxt(pump_file, np.full((365, 1), 24), fmt="%d")
 
         matrices_to_create = [
             "maxHourlyGenPower.txt",
