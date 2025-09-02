@@ -29,3 +29,21 @@ def test_nominal_case(study_assets: StudyAssets):
     actual_input_path = study_assets.study_dir / "input" / "st-storage"
     expected_input_path = study_assets.expected_dir / "input" / "st-storage"
     assert are_same_dir(actual_input_path, expected_input_path)
+
+    actual_input_path = (
+        study_assets.study_dir / "input" / "hydro" / "common" / "capacity"
+    )
+    
+    expected_input_path = (
+        study_assets.expected_dir / "input" / "hydro" / "common" / "capacity"
+    )
+    assert are_same_dir(actual_input_path, expected_input_path)
+
+    actual_input_path = (
+        study_assets.study_dir / "input" / "hydro" / "series" 
+    )
+
+    expected_input_path = (
+        study_assets.expected_dir / "input" / "hydro" / "series"  
+    )
+    assert are_same_dir(actual_input_path, expected_input_path)
