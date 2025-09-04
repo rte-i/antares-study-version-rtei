@@ -1,6 +1,5 @@
 from itertools import product
 from pathlib import Path
-import string
 
 from antares.study.version.ini_reader import IniReader
 from antares.study.version.ini_writer import IniWriter
