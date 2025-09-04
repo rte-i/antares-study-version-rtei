@@ -48,7 +48,4 @@ def test_nominal_case(study_assets: StudyAssets):
         study_assets.expected_dir / "input" / "hydro" / "series"  
     )
     assert are_same_dir(actual_input_path, expected_input_path)
-
-
-
     

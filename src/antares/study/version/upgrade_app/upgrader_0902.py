@@ -1,5 +1,6 @@
 from itertools import product
 from pathlib import Path
+import string
 
 from antares.study.version.ini_reader import IniReader
 from antares.study.version.ini_writer import IniWriter
@@ -53,7 +54,10 @@ class UpgradeTo0902(UpgradeMethod):
         other_preferences = data["other preferences"]
         other_preferences.pop("initial-reservoir-levels", None)
         other_preferences["shedding-policy"] = "accurate shave peaks"
-        data["compatibility"] = {"hydro-pmax": "daily"}
+        data["compatibility"] = {
+            "hydro-pmax": "daily",
+            "hydro-rule-curves": "single"
+        }
 
         if "variables selection" in data:
             _upgrade_thematic_trimming(data)
@@ -127,16 +131,41 @@ class UpgradeTo0902(UpgradeMethod):
         matrices_to_create = [
             "maxHourlyGenPower.txt",
             "maxHourlyPumpPower.txt",
+            "maxDailyReservoirLevels.txt",
+            "minDailyReservoirLevels.txt",
+            "avgDailyReservoirLevels.txt",
         ]
+
 
         series_path = hydro_dir / "series"
 
         if not Path(series_path).is_dir():
             return
+        
         for area in series_path.iterdir():
             area_dir = hydro_dir / area
             for matrix in matrices_to_create:
-                (area_dir / matrix).touch()
+                match matrix:
+                    case "maxDailyReservoirLevels.txt":
+                        np.savetxt(
+                            area_dir / matrix, 
+                            np.full((365, 1), 1), 
+                            fmt="%d"
+                            )
+                    case "minDailyReservoirLevels.txt":
+                        np.savetxt(
+                            area_dir / matrix, 
+                            np.full((365, 1), 0), 
+                            fmt="%d"
+                            )
+                    case "avgDailyReservoirLevels.txt":
+                        np.savetxt(
+                            area_dir / matrix,
+                            np.full((365, 1), 0.5),
+                            fmt="%.1f"
+                        )
+                    case _:
+                        (area_dir / matrix).touch()
 
     @classmethod
     def upgrade(cls, study_dir: Path) -> None:
