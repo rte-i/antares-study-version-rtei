@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from antares.study.version.model.study_version import StudyVersion
-from sqlalchemy import case
 
 from .upgrade_method import UpgradeMethod
 from ..model.general_data import GeneralData, GENERAL_DATA_PATH
