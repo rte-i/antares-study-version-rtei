@@ -53,10 +53,7 @@ class UpgradeTo0902(UpgradeMethod):
         other_preferences = data["other preferences"]
         other_preferences.pop("initial-reservoir-levels", None)
         other_preferences["shedding-policy"] = "accurate shave peaks"
-        data["compatibility"] = {
-            "hydro-pmax": "daily",
-            "hydro-rule-curves": "single"
-        }
+        data["compatibility"] = {"hydro-pmax": "daily"}
 
         if "variables selection" in data:
             _upgrade_thematic_trimming(data)
@@ -130,9 +127,6 @@ class UpgradeTo0902(UpgradeMethod):
         matrices_to_create = [
             "maxHourlyGenPower.txt",
             "maxHourlyPumpPower.txt",
-            "maxDailyReservoirLevels.txt",
-            "minDailyReservoirLevels.txt",
-            "avgDailyReservoirLevels.txt",
         ]
 
 
@@ -144,27 +138,7 @@ class UpgradeTo0902(UpgradeMethod):
         for area in series_path.iterdir():
             area_dir = hydro_dir / area
             for matrix in matrices_to_create:
-                match matrix:
-                    case "maxDailyReservoirLevels.txt":
-                        np.savetxt(
-                            area_dir / matrix, 
-                            np.full((365, 1), 1), 
-                            fmt="%d"
-                            )
-                    case "minDailyReservoirLevels.txt":
-                        np.savetxt(
-                            area_dir / matrix, 
-                            np.full((365, 1), 0), 
-                            fmt="%d"
-                            )
-                    case "avgDailyReservoirLevels.txt":
-                        np.savetxt(
-                            area_dir / matrix,
-                            np.full((365, 1), 0.5),
-                            fmt="%.1f"
-                        )
-                    case _:
-                        (area_dir / matrix).touch()
+                (area_dir / matrix).touch()
 
     @classmethod
     def upgrade(cls, study_dir: Path) -> None:

@@ -2,6 +2,7 @@ from antares.study.version.model.general_data import GeneralData
 from antares.study.version.upgrade_app.upgrader_0903 import UpgradeTo0903, upgrade_thematic_trimming
 from tests.conftest import StudyAssets
 
+from tests.helpers import are_same_dir
 
 def test_nominal_case(study_assets: StudyAssets):
     """
@@ -16,6 +17,14 @@ def test_nominal_case(study_assets: StudyAssets):
     expected = GeneralData.from_ini_file(study_assets.expected_dir)
     assert actual == expected
 
+    actual_input_path = (
+        study_assets.study_dir / "input" / "hydro" / "series" 
+    )
+
+    expected_input_path = (
+        study_assets.expected_dir / "input" / "hydro" / "series"  
+    )
+    assert are_same_dir(actual_input_path, expected_input_path)
 
 def test_filtering():
     # Setup

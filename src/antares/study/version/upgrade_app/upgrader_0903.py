@@ -1,10 +1,12 @@
 from pathlib import Path
 
 from antares.study.version.model.study_version import StudyVersion
+from sqlalchemy import case
 
 from .upgrade_method import UpgradeMethod
 from ..model.general_data import GeneralData, GENERAL_DATA_PATH
 
+import numpy as np
 
 def upgrade_thematic_trimming(data: GeneralData) -> None:
     def _get_thermal_variables_to_remove() -> set[str]:
@@ -91,10 +93,56 @@ class UpgradeTo0903(UpgradeMethod):
         data["other preferences"]["accurate-shave-peaks-include-short-term-storage"] = False
         data["adequacy patch"]["redispatch"] = False
 
+        data["compatibility"]["hydro-rule-curves"] = "single"
+
         if "variables selection" in data:
             upgrade_thematic_trimming(data)
 
         data.to_ini_file(study_dir)
+
+    @staticmethod
+
+    def _upgrade_hydro(study_dir: Path) -> None:
+        hydro_dir = study_dir / "input" / "hydro"
+
+        matrices_to_create = [
+            "maxDailyReservoirLevels.txt",
+            "minDailyReservoirLevels.txt",
+            "avgDailyReservoirLevels.txt",
+        ]
+
+        series_path = hydro_dir / "series"
+
+        if not Path(series_path).is_dir():
+            return
+        
+        for area in series_path.iterdir():
+            area_dir = hydro_dir / area
+            for matrix in matrices_to_create:
+                match matrix:
+                    case "maxDailyReservoirLevels.txt":
+                        np.savetxt(
+                        area_dir / matrix, 
+                        np.full((365, 1), 1), 
+                        fmt="%.1f"
+                        )
+                    case "minDailyReservoirLevels.txt":
+                        np.savetxt(
+                        area_dir / matrix, 
+                        np.full((365, 1), 0), 
+                        fmt="%.1f"
+                        )
+                    case "avgDailyReservoirLevels.txt":    
+                        np.savetxt(
+                            area_dir / matrix,
+                            np.full((365, 1), 0.5),
+                            fmt="%.1f"
+                        )
+                    case _:
+                        (area_dir / matrix).touch()
+                
+        
+
 
     @classmethod
     def upgrade(cls, study_dir: Path) -> None:
@@ -104,5 +152,6 @@ class UpgradeTo0903(UpgradeMethod):
         Args:
             study_dir: The study directory.
         """
-
+        
         cls._upgrade_general_data(study_dir)
+        cls._upgrade_hydro(study_dir)
