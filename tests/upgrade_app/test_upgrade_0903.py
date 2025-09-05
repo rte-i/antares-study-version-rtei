@@ -4,6 +4,8 @@ from tests.conftest import StudyAssets
 
 from tests.helpers import are_same_dir
 
+from antares.study.version.ini_reader import IniReader
+
 def test_nominal_case(study_assets: StudyAssets):
     """
     Check that the files are correctly modified
@@ -16,6 +18,12 @@ def test_nominal_case(study_assets: StudyAssets):
     actual = GeneralData.from_ini_file(study_assets.study_dir)
     expected = GeneralData.from_ini_file(study_assets.expected_dir)
     assert actual == expected
+
+    actual_hydro_ini_path = study_assets.study_dir / "input" / "hydro" / "hydro.ini"
+    actual_hydro_content = IniReader().read(actual_hydro_ini_path)
+    expected_path = study_assets.expected_dir / "input" / "hydro" / "hydro.ini"
+    expected_hydro_content = IniReader().read(expected_path)
+    assert actual_hydro_content == expected_hydro_content
     
     actual_input_path = (
         study_assets.study_dir / "input" / "hydro" / "common" / "capacity" 

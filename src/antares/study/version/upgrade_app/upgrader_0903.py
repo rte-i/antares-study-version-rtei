@@ -100,7 +100,6 @@ class UpgradeTo0903(UpgradeMethod):
         data.to_ini_file(study_dir)
 
     @staticmethod
-
     def _upgrade_hydro(study_dir: Path) -> None:
         hydro_dir = study_dir / "input" / "hydro"
 
@@ -131,7 +130,7 @@ class UpgradeTo0903(UpgradeMethod):
                         np.full((365, 1), 0), 
                         fmt="%.1f"
                         )
-                    case "avgDailyReservoirLevels.txt":    
+                    case "avgDailyReservoirLevels.txt":
                         np.savetxt(
                             area_dir / matrix,
                             np.full((365, 1), 0.5),
