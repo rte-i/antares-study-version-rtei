@@ -16,6 +16,16 @@ def test_nominal_case(study_assets: StudyAssets):
     actual = GeneralData.from_ini_file(study_assets.study_dir)
     expected = GeneralData.from_ini_file(study_assets.expected_dir)
     assert actual == expected
+    
+    actual_input_path = (
+        study_assets.study_dir / "input" / "hydro" / "common" / "capacity" 
+    )
+
+    expected_input_path = (
+        study_assets.expected_dir / "input" / "hydro" / "common" / "capacity"  
+    )
+    assert are_same_dir(actual_input_path, expected_input_path)
+
 
     actual_input_path = (
         study_assets.study_dir / "input" / "hydro" / "series" 
