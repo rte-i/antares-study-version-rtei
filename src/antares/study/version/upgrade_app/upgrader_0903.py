@@ -121,18 +121,21 @@ class UpgradeTo0903(UpgradeMethod):
             for matrix in matrices_to_create:
                 match matrix:
                     case "maxDailyReservoirLevels.txt":
+                        (area_dir / matrix).touch()
                         np.savetxt(
                         area_dir / matrix, 
                         np.full((365, 1), 1), 
                         fmt="%.1f"
                         )
                     case "minDailyReservoirLevels.txt":
+                        (area_dir / matrix).touch()
                         np.savetxt(
                         area_dir / matrix, 
                         np.full((365, 1), 0), 
                         fmt="%.1f"
                         )
-                    case "avgDailyReservoirLevels.txt":    
+                    case "avgDailyReservoirLevels.txt":
+                        (area_dir / matrix).touch()    
                         np.savetxt(
                             area_dir / matrix,
                             np.full((365, 1), 0.5),
