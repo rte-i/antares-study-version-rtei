@@ -91,9 +91,8 @@ class UpgradeTo0903(UpgradeMethod):
 
         data["other preferences"]["accurate-shave-peaks-include-short-term-storage"] = False
         data["adequacy patch"]["redispatch"] = False
-
-        data["compatibility"]["hydro-rule-curves"] = "single"
-
+        data["compatibility"] = {"hydro-pmax": "daily",
+                                 "hydro-rule-curves": "single"}
         if "variables selection" in data:
             upgrade_thematic_trimming(data)
 
@@ -117,18 +116,21 @@ class UpgradeTo0903(UpgradeMethod):
                 for matrix in matrices_to_create:
                     match matrix:
                         case "maxDailyReservoirLevels.txt":
+                            print(f"Creating {matrix} in {area_dir}")
                             np.savetxt(
                                 area_dir / matrix, 
                                 np.full((365, 1), 1), 
                                 fmt="%.1f"
                             )
                         case "minDailyReservoirLevels.txt":
+                            print(f"Creating {matrix} in {area_dir}")
                             np.savetxt(
                                 area_dir / matrix, 
                                 np.full((365, 1), 0), 
                                 fmt="%.1f"
                             )
                         case "avgDailyReservoirLevels.txt":
+                            print(f"Creating {matrix} in {area_dir}")
                             np.savetxt(
                                 area_dir / matrix,
                                 np.full((365, 1), 0.5),

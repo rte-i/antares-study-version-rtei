@@ -54,7 +54,6 @@ class UpgradeTo0902(UpgradeMethod):
         other_preferences.pop("initial-reservoir-levels", None)
         other_preferences["shedding-policy"] = "accurate shave peaks"
         data["compatibility"] = {"hydro-pmax": "daily"}
-
         if "variables selection" in data:
             _upgrade_thematic_trimming(data)
 
