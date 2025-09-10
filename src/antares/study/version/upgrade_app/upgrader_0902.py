@@ -42,7 +42,7 @@ class UpgradeTo0902(UpgradeMethod):
 
     old = StudyVersion(9, 0)
     new = StudyVersion(9, 2)
-    files = ["input/st-storage", GENERAL_DATA_PATH, "input/hydro/hydro.ini", "input/areas"]
+    files = ["input/st-storage", GENERAL_DATA_PATH, "input/hydro/hydro.ini", "input/areas","input/hydro/common/capacity", "input/hydro/series"]
 
     @staticmethod
     def _upgrade_general_data(study_dir: Path) -> None:
