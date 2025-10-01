@@ -112,8 +112,6 @@ class UpgradeTo0903(UpgradeMethod):
 
         series_path = hydro_dir / "series" 
 
-        if not Path(series_path).is_dir():
-            return
 
         for area_dir in series_path.iterdir():
                 for matrix in matrices_to_create:
