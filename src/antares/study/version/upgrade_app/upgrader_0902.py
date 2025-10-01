@@ -114,8 +114,6 @@ class UpgradeTo0902(UpgradeMethod):
 
         common_capacity_path = hydro_dir / "common" / "capacity"
 
-        if not Path(common_capacity_path).is_dir():
-            return
 
         for area_id in all_areas_ids:
             gen_file = common_capacity_path / f"maxDailyGenEnergy_{area_id}.txt"
@@ -131,8 +129,6 @@ class UpgradeTo0902(UpgradeMethod):
 
         series_path = hydro_dir / "series"
 
-        if not Path(series_path).is_dir():
-            return
         for area in series_path.iterdir():
             area_dir = hydro_dir / area
             for matrix in matrices_to_create:
