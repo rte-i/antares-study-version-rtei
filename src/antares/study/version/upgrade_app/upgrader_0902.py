@@ -8,6 +8,7 @@ from antares.study.version.model.study_version import StudyVersion
 from .upgrade_method import UpgradeMethod
 from ..model.general_data import GENERAL_DATA_PATH, GeneralData
 
+import numpy as np
 
 def _upgrade_thematic_trimming(data: GeneralData) -> None:
     def _get_variables_to_remove() -> set[str]:
@@ -41,7 +42,7 @@ class UpgradeTo0902(UpgradeMethod):
 
     old = StudyVersion(9, 0)
     new = StudyVersion(9, 2)
-    files = ["input/st-storage", GENERAL_DATA_PATH, "input/hydro/hydro.ini", "input/areas"]
+    files = ["input/st-storage", GENERAL_DATA_PATH, "input/hydro/hydro.ini", "input/areas","input/hydro/common/capacity", "input/hydro/series"]
 
     @staticmethod
     def _upgrade_general_data(study_dir: Path) -> None:
@@ -108,6 +109,30 @@ class UpgradeTo0902(UpgradeMethod):
         sections["overflow spilled cost difference"] = new_section
         writer = IniWriter()
         writer.write(sections, ini_path)
+
+        hydro_dir = study_dir / "input" / "hydro"
+
+        common_capacity_path = hydro_dir / "common" / "capacity"
+
+
+        for area_id in all_areas_ids:
+            gen_file = common_capacity_path / f"maxDailyGenEnergy_{area_id}.txt"
+            pump_file = common_capacity_path / f"maxDailyPumpEnergy_{area_id}.txt"
+
+            np.savetxt(gen_file, np.full((365, 1), 24), fmt="%d")
+            np.savetxt(pump_file, np.full((365, 1), 24), fmt="%d")
+
+        matrices_to_create = [
+            "maxHourlyGenPower.txt",
+            "maxHourlyPumpPower.txt",
+        ]
+
+        series_path = hydro_dir / "series"
+
+        for area in series_path.iterdir():
+            area_dir = hydro_dir / area
+            for matrix in matrices_to_create:
+                (area_dir / matrix).touch()
 
     @classmethod
     def upgrade(cls, study_dir: Path) -> None:

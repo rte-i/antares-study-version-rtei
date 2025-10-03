@@ -18,7 +18,6 @@ def are_same_dir(dir1: Path, dir2: Path, *, ignore: t.Collection[str] = DEFAULT_
     for common_file in dirs_cmp.common_files:
         file_1 = dir1 / common_file
         file_2 = dir2 / common_file
-
         try:
             with open(file_1, mode="r", encoding="utf-8") as f1:
                 with open(file_2, mode="r", encoding="utf-8") as f2:
